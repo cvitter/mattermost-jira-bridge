@@ -44,6 +44,8 @@ def send_webhook(project_id, text_out, attachment_text, attachment_color):
     if len(project_id) > 0:
         channel = get_channel(project_id)
 
+    attach_dict = {}
+
     data = {
         "channel": channel,
         "text": text_out,
