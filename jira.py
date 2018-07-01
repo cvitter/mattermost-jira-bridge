@@ -60,6 +60,10 @@ def send_webhook(project_id, text_out, attachment_text, attachment_color):
     return response
 
 
+def handle_actions(project_id, json_in):
+
+    return send_webhook(project_id, "Test text", "", "")
+
 """
 ------------------------------------------------------------------------------------------
 Flask application below
@@ -75,6 +79,8 @@ def hooks(project_id):
     if len(request.get_json()) > 0:
         print(project_id)
         print(json.dumps(request.get_json()))
+
+        handle_actions(project_id, request.get_json())
     return ""
 
 if __name__ == '__main__':
