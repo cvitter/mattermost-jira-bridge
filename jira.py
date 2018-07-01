@@ -35,7 +35,7 @@ def read_config():
 
 
 def get_channel(project_id):
-    return projects.project_list.get(project_id, default="")
+    return projects.project_list.get(project_id, "")
 
 
 def send_webhook(project_id, text_out, attachment_text, attachment_color):
