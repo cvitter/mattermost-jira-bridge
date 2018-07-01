@@ -4,6 +4,9 @@
 		"port" : 5007,
 		"debug" : false
 	},
+	"features" : {
+		"use_attachments" : "true"
+	},
 	"colors" : {
 		"error" : "#ff0000",
 		"alert" : "#ffff00",
