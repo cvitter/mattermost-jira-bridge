@@ -6,9 +6,9 @@
 	},
 	"features" : {
 		"use_project_to_channel_map" : true,
-		"use_project_to_channel_pattern" : true,
-		"project_to_channel_pattern" : "JIRA: ", 
-		"use_attachments" : "true"
+		"use_project_to_channel_pattern" : false,
+		"project_to_channel_pattern" : "jira-", 
+		"use_attachments" : true
 	},
 	"colors" : {
 		"error" : "#ff0000",
