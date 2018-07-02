@@ -81,7 +81,7 @@ def send_webhook(project_id, text):
 
 def handle_actions(project_id, json_in):
 
-    return send_webhook(project_id, "Test text", "")
+    return send_webhook(project_id, "Test text")
 
 """
 ------------------------------------------------------------------------------------------
