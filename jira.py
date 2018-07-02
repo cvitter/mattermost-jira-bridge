@@ -79,6 +79,21 @@ def send_webhook(project_id, text):
     return response
 
 
+def user_profile_link(user_name):
+    return jira_url + "secure/ViewProfile.jspa?name=" + user_name
+
+
+def format_message(project, event):
+    """
+    """
+    message = + \
+        "**Project**: " + \
+        "**Action**: " + \
+        "**User**: "
+
+    return message
+
+
 def handle_actions(project_id, data):
     """
     """
@@ -95,7 +110,9 @@ def handle_actions(project_id, data):
         return None
 
     if jira_event == "project_created":
-        test = "1"
+        message = format_message(project_id, jira_event_text)
+    if jira_event == "jira:issue_created":
+        message = format_message(project_id, jira_event_text)
 
 
     return send_webhook(project_id, message)
