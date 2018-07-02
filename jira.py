@@ -17,7 +17,11 @@ def read_config():
     application_port = d["application"]["port"]
     application_debug = d["application"]["debug"]
 
-    global use_attachments
+    global use_project_to_channel_map, use_project_to_channel_pattern
+    global project_to_channel_pattern, use_attachments
+    use_project_to_channel_map = d["features"]["use_project_to_channel_map"]
+    use_project_to_channel_pattern = d["features"]["use_project_to_channel_pattern"]
+    project_to_channel_pattern = d["features"]["project_to_channel_pattern"]
     use_attachments = d["features"]["use_attachments"]
 
     global error_color, alert_color, success_color
@@ -35,7 +39,15 @@ def read_config():
 
 
 def get_channel(project_id):
-    return projects.project_list.get(project_id, "")
+    """
+    Returns the Mattermost channel to post into
+    """
+    channel = ""
+    if use_project_to_channel_map:
+        channel = projects.project_list.get(project_id, "")
+    if use_project_to_channel_pattern and len(channel) == 0:
+        channel = project_to_channel_pattern + project_id
+    return channel
 
 
 def send_webhook(project_id, text_out, attachment_text, attachment_color):
