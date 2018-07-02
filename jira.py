@@ -79,8 +79,9 @@ def send_webhook(project_id, text):
     return response
 
 
-def user_profile_link(user_name):
-    return jira_url + "secure/ViewProfile.jspa?name=" + user_name
+def user_profile_link(user_id, user_name):
+    return "[" + user_name + "](" + jira_url + \
+        "secure/ViewProfile.jspa?name=" + user_id + ")"
 
 
 def project_link(project_name, project_id):
@@ -91,9 +92,9 @@ def format_message(project_id, event, user_id, user_name):
     """
     """
     message = "" + \
-        "**Project**: " + project_link(project_id, project_id) + ")\n" \
+        "**Project**: " + project_link(project_id, project_id) + "\n" \
         "**Action**: " + event + "\n" \
-        "**User**: "
+        "**User**: " + user_profile_link(user_id, user_name)
 
     return message
 
