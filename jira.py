@@ -47,6 +47,7 @@ def get_channel(project_id):
         channel = projects.project_list.get(project_id, "")
     if use_project_to_channel_pattern and len(channel) == 0:
         channel = project_to_channel_pattern + project_id
+    print (channel)
     return channel
 
 
