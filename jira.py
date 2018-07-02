@@ -44,9 +44,9 @@ def get_channel(project_id):
     settings in config.json or returns "" if not configured
     """
     channel = ""
-    if use_project_to_channel_map == true:
+    if use_project_to_channel_map:
         channel = projects.project_list.get(project_id, "")
-    if use_project_to_channel_pattern == true and len(channel) == 0:
+    if use_project_to_channel_pattern and len(channel) == 0:
         channel = project_to_channel_pattern + project_id
     return channel
 
@@ -63,7 +63,7 @@ def send_webhook(project_id, text):
         "icon_url": mattermost_icon
     }
     
-    if use_attachments == true:
+    if use_attachments:
         data["attachments"] = [{
             "color": success_color,
             "text": text
