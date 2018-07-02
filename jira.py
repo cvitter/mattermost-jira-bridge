@@ -24,10 +24,8 @@ def read_config():
     project_to_channel_pattern = d["features"]["project_to_channel_pattern"]
     use_attachments = d["features"]["use_attachments"]
 
-    global error_color, alert_color, success_color
-    error_color = d["colors"]["error"]
-    alert_color = d["colors"]["alert"]
-    success_color = d["colors"]["success"]
+    global attachment_color
+    attachment_color = d["colors"]["attachment"]
 
     global webhook_url, mattermost_user, mattermost_icon
     webhook_url = d["mattermost"]["webhook"]
@@ -53,6 +51,8 @@ def get_channel(project_id):
 
 def send_webhook(project_id, text):
     """
+    Method sends the formatted message to the configured
+    Mattermost webhook URL
     """
     if len(project_id) > 0:
         channel = get_channel(project_id)
@@ -62,10 +62,10 @@ def send_webhook(project_id, text):
         "username": mattermost_user,
         "icon_url": mattermost_icon
     }
-    
+
     if use_attachments:
         data["attachments"] = [{
-            "color": success_color,
+            "color": attachment_color,
             "text": text
         }]
     else:
@@ -79,9 +79,26 @@ def send_webhook(project_id, text):
     return response
 
 
-def handle_actions(project_id, json_in):
+def handle_actions(project_id, data):
+    """
+    """
+    message = ""
 
-    return send_webhook(project_id, "Test text")
+    jira_event = data["webhookEvent"]
+    jira_event_text = events.jira_events.get(jira_event, "")
+
+    if len(jira_event_text) == 0:
+        """
+        Not a supported JIRA event, return None
+        and quietly go away
+        """
+        return None
+
+    if jira_event == "project_created":
+        test = "1"
+
+
+    return send_webhook(project_id, message)
 
 """
 ------------------------------------------------------------------------------------------
