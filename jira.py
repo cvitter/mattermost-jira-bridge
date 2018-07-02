@@ -86,9 +86,9 @@ def user_profile_link(user_name):
 def format_message(project, event):
     """
     """
-    message = + \
-        "**Project**: " + \
-        "**Action**: " + \
+    message = "" + \
+        "**Project**: " + project + "\n" \
+        "**Action**: " + event + "\n" \
         "**User**: "
 
     return message
