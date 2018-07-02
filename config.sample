@@ -11,9 +11,7 @@
 		"use_attachments" : true
 	},
 	"colors" : {
-		"error" : "#ff0000",
-		"alert" : "#ffff00",
-		"success" : "#28c12b"
+		"attachement" : "#28c12b"
 	},
 	"mattermost" : {
 		"webhook" : "https://mattermost.url/hooks/webhookid",
