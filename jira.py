@@ -127,7 +127,7 @@ def handle_actions(project_id, data):
         message = format_message(project_id,
                                  data["issue"]["fields"]["project"]["name"],
                                  jira_event_text + " " +
-                                   issue_link(project_id, issue_id),
+                                   issue_link(project_id, data["issue"]["key"]),
                                  data["user"]["key"],
                                  data["user"]["displayName"])
 
