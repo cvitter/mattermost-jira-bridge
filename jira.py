@@ -149,7 +149,7 @@ def handle_actions(project_id, data):
                                  data["project"]["projectLead"]["displayName"])
 
     if jira_event.find("issue") > -1:
-        issue_type = data["issue"]["issuetype"]["name"]
+        issue_type = data["issue"]["fields"]["issuetype"]["name"]
         print ("Issue Type: " + issue_type)
 
     if jira_event == "jira:issue_created":
