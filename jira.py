@@ -51,7 +51,7 @@ def get_channel(project_id):
 
 def send_webhook(project_id, text):
     """
-    Method sends the formatted message to the configured
+    Sends the formatted message to the configured
     Mattermost webhook URL
     """
     if len(project_id) > 0:
@@ -110,7 +110,7 @@ def format_changelog(changelog_items):
     if len(changelog_items) > 1:
         output = "\n"
     for item in changelog_items:
-        output += "**" + item["field"] + "** updated from _" + \
+        output += "Field **" + item["field"] + "** updated from _" + \
                   str(item["fromString"]) + "_ to _" + \
                   str(item["toString"]) + "_\n"
     return output
@@ -160,12 +160,15 @@ def handle_actions(project_id, data):
 
     if jira_event == "jira:issue_updated":
         issue_event_type = data["issue_event_type_name"]
-        if issue_event_type == "issue_generic" or "issue_updated":
+        if issue_event_type == "issue_generic" or issue_event_type == "issue_updated":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
                                      format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
+
+        if issue_event_type == "issue_commented":
+            message = ""
 
     return send_webhook(project_id, message)
 
