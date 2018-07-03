@@ -133,6 +133,7 @@ def handle_actions(project_id, data):
 
     jira_event = data["webhookEvent"]
     jira_event_text = events.jira_events.get(jira_event, "")
+    issue_type = ""
 
     if len(jira_event_text) == 0:
         """
@@ -146,6 +147,10 @@ def handle_actions(project_id, data):
                                  jira_event_text,
                                  data["project"]["projectLead"]["key"],
                                  data["project"]["projectLead"]["displayName"])
+
+    if jira_event.find("issue") > -1:
+        issue_type = data["issue"]["issuetype"]["name"]
+        print ("Issue Type: " + issue_type)
 
     if jira_event == "jira:issue_created":
         message = format_message(project_id,
@@ -167,7 +172,15 @@ def handle_actions(project_id, data):
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-        if issue_event_type == "issue_commented":
+        if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited" or issue_event_type == "issue_comment_deleted":
+            message = format_message(project_id,
+                                     data["issue"]["fields"]["project"]["name"],
+                                     format_changelog(data["changelog"]["items"]),
+                                     data["user"]["key"],
+                                     data["user"]["displayName"])
+
+        if issue_event_type == "issue_comment_edited" or issue_event_type == "issue_comment_deleted":
+
             message = ""
 
     return send_webhook(project_id, message)

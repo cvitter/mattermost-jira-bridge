@@ -6,8 +6,10 @@
 	},
 	"features" : {
 		"use_project_to_channel_map" : true,
-		"use_project_to_channel_pattern" : false,
+		"use_project_to_channel_pattern" : true,
 		"project_to_channel_pattern" : "jira-", 
+		"use_bug_specific_channel" : false,
+		"bug_channel_postfix" : "-bugs",
 		"use_attachments" : true
 	},
 	"colors" : {
