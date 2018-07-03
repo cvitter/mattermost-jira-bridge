@@ -106,6 +106,7 @@ def format_changelog(changelog_items):
     """
     The changelog can record 1+ changes to an issue
     """
+    output = ""
     if len(changelog_items) > 1:
         output = "\n"
     for item in changelog_items:
