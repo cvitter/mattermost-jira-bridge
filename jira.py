@@ -88,15 +88,18 @@ def project_link(project_name, project_id):
     return "[" + project_name + "](" + jira_url + "projects/" + project_id + ")"
 
 
+def issue_link(project_id, issue_id):
+    return "[" + issue_id + "](" + jira_url + "projects/" + project_id + \
+        "/issues/" + issue_id + ")"
+
+
 def format_message(project_id, project_name, event, user_id, user_name):
     """
     """
     message = "" + \
-        "| :------------ |:---------------:|\n" + \
-        "| **Project**: | " + project_link(project_id, project_id) + "|\n" \
-        "| **Action**: | " + event + " |\n" \
-        "| **User**: | " + user_profile_link(user_id, user_name) + "|"
-
+        "**Project**: " + project_link(project_id, project_id) + "\n" \
+        "**Action**: " + event + "\n" \
+        "**User**: " + user_profile_link(user_id, user_name)
     return message
 
 
@@ -121,10 +124,11 @@ def handle_actions(project_id, data):
                                  data["project"]["projectLead"]["key"],
                                  data["project"]["projectLead"]["displayName"])
     if jira_event == "jira:issue_created":
-        message = format_message(project_id, 
+        message = format_message(project_id,
                                  data["issue"]["fields"]["project"]["name"],
-                                 jira_event_text,
-                                 data["user"]["key"], 
+                                 jira_event_text + " " +
+                                   issue_link(project_id, issue_id),
+                                 data["user"]["key"],
                                  data["user"]["displayName"])
 
     return send_webhook(project_id, message)
