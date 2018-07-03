@@ -85,18 +85,34 @@ def user_profile_link(user_id, user_name):
 
 
 def project_link(project_name, project_id):
-    return "[" + project_name + "](" + jira_url + "projects/" + project_id + ")"
+    return "[" + project_name + "](" + jira_url + "projects/" + \
+        project_id + ")"
 
 
 def issue_link(project_id, issue_id):
-    return "[" + issue_id + "](" + jira_url + "projects/" + project_id + \
-        "/issues/" + issue_id + ")"
+    return "[" + issue_id + "](" + jira_url + "projects/" + \
+        project_id + "/issues/" + issue_id + ")"
 
-def format_new_issue(event, project_id, issue_key, summary, description, priority):
+
+def format_new_issue(event, project_id, issue_key, summary, description,
+                     priority):
     return "" + \
         event + " " + issue_link(project_id, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
         "**Description**: " + description
+
+
+def format_changelog(changelog_items):
+    """
+    The changelog can record 1+ changes to an issue
+    """
+    if len(changelog_items) > 1:
+        output = "\n"
+    for item in changelog_items:
+        output += "**" + item["field"] + "** updated from _" + \
+                  item["fromString"] + "_ to _" + \
+                  item["toString"] + "_\n"
+    return output
 
 
 def format_message(project_id, project_name, event, user_id, user_name):
@@ -129,6 +145,7 @@ def handle_actions(project_id, data):
                                  jira_event_text,
                                  data["project"]["projectLead"]["key"],
                                  data["project"]["projectLead"]["displayName"])
+
     if jira_event == "jira:issue_created":
         message = format_message(project_id,
                                  data["issue"]["fields"]["project"]["name"],
@@ -140,6 +157,10 @@ def handle_actions(project_id, data):
                                  data["user"]["key"],
                                  data["user"]["displayName"])
 
+    if jira_event == "jira:issue_updated":
+        issue_event_type = d["issue_event_type_name"]
+        if issue_event_type == "issue_generic":
+            message = format_changelog(d["changelog"]["items"])
     return send_webhook(project_id, message)
 
 
