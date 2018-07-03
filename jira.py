@@ -115,13 +115,16 @@ def handle_actions(project_id, data):
         return None
 
     if jira_event == "project_created":
-        message = format_message(project_id, data["project"]["name"], 
-                                 jira_event_text, 
-                                 data["project"]["projectLead"]["key"], 
+        message = format_message(project_id, data["project"]["name"],
+                                 jira_event_text,
+                                 data["project"]["projectLead"]["key"],
                                  data["project"]["projectLead"]["displayName"])
     if jira_event == "jira:issue_created":
-        message = format_message(project_id, jira_event_text, "craig", "Craig Vitter")
-
+        message = format_message(project_id, 
+                                 data["issue"]["fields"]["project"]["name"],
+                                 jira_event_text,
+                                 data["user"]["key"], 
+                                 data["user"]["displayName"])
 
     return send_webhook(project_id, message)
 
