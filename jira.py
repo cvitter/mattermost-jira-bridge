@@ -161,7 +161,12 @@ def handle_actions(project_id, data):
     if jira_event == "jira:issue_updated":
         issue_event_type = data["issue_event_type_name"]
         if issue_event_type == "issue_generic":
-            message = format_changelog(data["changelog"]["items"])
+            message = format_message(project_id,
+                                     data["issue"]["fields"]["project"]["name"],
+                                     format_changelog(data["changelog"]["items"]),
+                                     data["user"]["key"],
+                                     data["user"]["displayName"])
+
     return send_webhook(project_id, message)
 
 
