@@ -92,6 +92,12 @@ def issue_link(project_id, issue_id):
     return "[" + issue_id + "](" + jira_url + "projects/" + project_id + \
         "/issues/" + issue_id + ")"
 
+def format_new_issue(event, project_id, issue_key, summary, description, priority):
+    return "" + \
+        event + " " + issue_link(project_id, data["issue"]["key"]) + "\n" \
+        "**Summary**: " + summary + " (_" + priority + "_)\n" \
+        "**Description**: " + description
+
 
 def format_message(project_id, project_name, event, user_id, user_name):
     """
@@ -126,12 +132,16 @@ def handle_actions(project_id, data):
     if jira_event == "jira:issue_created":
         message = format_message(project_id,
                                  data["issue"]["fields"]["project"]["name"],
-                                 jira_event_text + " " +
-                                   issue_link(project_id, data["issue"]["key"]),
+                                 format_new_issue(jira_event_text, project_id,
+                                                  data["issue"]["key"],
+                                                  data["issue"]["fields"]["summary"],
+                                                  data["issue"]["fields"]["description"],
+                                                  data["issue"]["fields"]["priority"]["name"]),
                                  data["user"]["key"],
                                  data["user"]["displayName"])
 
     return send_webhook(project_id, message)
+
 
 """
 ------------------------------------------------------------------------------------------
