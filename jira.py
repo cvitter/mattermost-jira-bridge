@@ -183,10 +183,6 @@ def handle_actions(project_id, data):
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-        if issue_event_type == "issue_comment_edited" or issue_event_type == "issue_comment_deleted":
-
-            message = ""
-
     return send_webhook(project_id, message)
 
 
