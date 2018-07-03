@@ -94,7 +94,7 @@ def issue_link(project_id, issue_id):
 
 def format_new_issue(event, project_id, issue_key, summary, description, priority):
     return "" + \
-        event + " " + issue_link(project_id, data["issue"]["key"]) + "\n" \
+        event + " " + issue_link(project_id, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
         "**Description**: " + description
 
