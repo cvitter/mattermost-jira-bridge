@@ -88,7 +88,7 @@ def project_link(project_name, project_id):
     return "[" + project_name + "](" + jira_url + "projects/" + project_id + ")"
 
 
-def format_message(project_id, event, user_id, user_name):
+def format_message(project_id, project_name, event, user_id, user_name):
     """
     """
     message = "" + \
@@ -115,7 +115,10 @@ def handle_actions(project_id, data):
         return None
 
     if jira_event == "project_created":
-        message = format_message(project_id, jira_event_text, "craig", "Craig Vitter")
+        message = format_message(project_id, data["project"]["name"], 
+                                 jira_event_text, 
+                                 data["project"]["projectLead"]["key"], 
+                                 data["project"]["projectLead"]["displayName"])
     if jira_event == "jira:issue_created":
         message = format_message(project_id, jira_event_text, "craig", "Craig Vitter")
 
