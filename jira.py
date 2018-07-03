@@ -168,7 +168,7 @@ def handle_actions(project_id, data):
         if issue_event_type == "issue_generic" or issue_event_type == "issue_updated":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     "**Issue**: " + issue_link(project_id, data["issue"]["key"]) + "\n" + \
+                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + \
                                        format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
