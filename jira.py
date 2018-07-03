@@ -92,9 +92,10 @@ def format_message(project_id, project_name, event, user_id, user_name):
     """
     """
     message = "" + \
-        "**Project**: " + project_link(project_id, project_id) + "\n" \
-        "**Action**: " + event + "\n" \
-        "**User**: " + user_profile_link(user_id, user_name)
+        "| :------------ |:---------------:|\n" + \
+        "| **Project**: | " + project_link(project_id, project_id) + "|\n" \
+        "| **Action**: | " + event + " |\n" \
+        "| **User**: | " + user_profile_link(user_id, user_name) + "|"
 
     return message
 
