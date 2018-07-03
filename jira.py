@@ -111,8 +111,8 @@ def format_changelog(changelog_items):
         output = "\n"
     for item in changelog_items:
         output += "**" + item["field"] + "** updated from _" + \
-                  item["fromString"] + "_ to _" + \
-                  item["toString"] + "_\n"
+                  str(item["fromString"]) + "_ to _" + \
+                  str(item["toString"]) + "_\n"
     return output
 
 
