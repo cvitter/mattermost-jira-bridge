@@ -168,15 +168,18 @@ def handle_actions(project_id, data):
         if issue_event_type == "issue_generic" or issue_event_type == "issue_updated":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + \
+                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
                                        format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-        if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited" or issue_event_type == "issue_comment_deleted":
+        if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited": # or issue_event_type == "issue_comment_deleted":
+            formatted_event_type = issue_event_type.replace("_", " ")
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     format_changelog(data["changelog"]["items"]),
+                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
+                                       formatted_event_type + \
+                                       "**Comment**: " + data["comment"]["body"],
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
