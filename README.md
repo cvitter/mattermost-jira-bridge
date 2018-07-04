@@ -46,11 +46,22 @@ you can leave this as-is or simply update the port to the desired port for your 
 	}
 ```
 
-If you do not want the Flask application to be accessible from other machines you can update the host address to
-`127.0.0.1`. You can also enable Flask's debug mode by changing `debug` to `true`.
+If you do not want the Flask application to be accessible from other machines you can 
+update the host address to `127.0.0.1`. You can also enable Flask's debug mode by 
+changing `debug` to `true`.
 
 ### Features
 
+The `features` section allows you to configure how messages map to Mattermost channels based 
+on JIRA project and whether or not the issue is labeled as a bug. The channel mapping has
+the following options:
+
+* All messages are sent to the default channel configured in the Mattermost webhook;
+* Messages are mapped to Mattermost channels based on mappings in the `projects.json` file;
+* Messages are mapped to Mattermost channels based on a naming pattern configured in the 
+`project_to_channel_pattern` setting.
+
+Specific configuration settings are described in more detail below.
 
 ```
 	"features" : {
@@ -64,9 +75,36 @@ If you do not want the Flask application to be accessible from other machines yo
 	}
 ```
 
+* `use_project_to_channel_map` - when set to true the application will check the `projects.json`
+file and select the Mattermost channel based on the JIRA Project Key. In the example file
+below the `PRJX` project key would map to the `prjx-jira' channel in Mattermost.
+
+```
+{
+	"projects" : {
+    	"prjx": "prjx-jira",
+    	"prjx-bug": "prjx-jira-bugs",
+    	"prjz": "prjz-jira"
+    }
+}
+```
+
+**Note**: In the example above the `prjx-jira` channel is named `PRJX: JIRA`. Mattermost converted 
+the channel name to `prjx-jira` for the channel URL by removing spaces and special characters.
+When specifying the channel to send messages to you need to use this modified URL friendly
+format. If you need to find the correct format you can select `View Info` for the channel in
+Mattermost and select the channel portion of the URL, e.g.:
+`https://mymattermostserver.com/myteam/channels/prjx-jira`.
+
+* `use_project_bugs_to_channel_map` - when set to true the application will check the `projects.json`
+file when the issue type equals `bug` and select the Mattermost channel based on the JIRA Project 
+Key with `-bug` appended to it. In the example above a bug submitted in the PRJX project
+would be mapped as `prjx-bug` and the corresponding message would be posted to the 
+`prjx-jira-bugs` channel.
+
 ### Colors
 
-The colors section has one setting, `attachment`,  which sets the highlight color
+The `colors` section has one setting, `attachment`,  which sets the highlight color
 of the message if sent as a 
 [Message Attachment](https://docs.mattermost.com/developer/message-attachments.html).
 **Note**: The default color that the application ships with is green.
@@ -77,10 +115,9 @@ of the message if sent as a
 	}
 ```
 
-
 ### Mattermost
 
-The Mattermost section is used to configure the Mattermost web hook that the application
+The `mattermost` section is used to configure the Mattermost web hook that the application
 will post messages to. You can optionally add a user name and icon to override the 
 default configured in Mattermost.
 
@@ -94,7 +131,7 @@ default configured in Mattermost.
 
 ### JIRA
 
-The JIRA section has one setting for the base URL of your JIRA server. This setting is used
+The `jira` section has one setting for the base URL of your JIRA server. This setting is used
 to generate links in messages the application posts to Mattermost.
 
 ```
@@ -103,10 +140,15 @@ to generate links in messages the application posts to Mattermost.
 	}
 ```
 
-
 ## Execution
 
-5. Run the Flask application - there are a number of ways to run the application but I use the following command that runs the application headlessly and captures output into a log file for troubleshooting:
+Once the application is configured that are a number of ways to run it. The simplest for 
+testing purposes is:
+
+`sudo python jira.py`
+
+For longer term execution I use the following command that runs the application headlessly 
+and captures output into a log file for troubleshooting:
 
 ```
 sudo python jira.py >> jira.log 2>&1 &
