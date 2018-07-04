@@ -56,14 +56,12 @@ def get_channel(project_key, issue_type):
     Mattermost channel has been configured
     """
     channel = ""
-    print ("KEY: " + project_key + " ISSUE_TYPE: " + issue_type)
     if use_project_to_channel_map:
         if use_project_bugs_to_channel_map and issue_type.lower() == "bug":
             channel = get_project_from_json(project_key + "-bug")
         if len(channel) == 0:
             channel = get_project_from_json(project_key)
-        print ("CHANNEL: " + channel)
-
+    
     if use_project_to_channel_pattern and len(channel) == 0:
         channel = project_to_channel_pattern + project_key
         if use_bug_specific_channel and issue_type.lower() == "bug":
