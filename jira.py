@@ -173,12 +173,12 @@ def handle_actions(project_id, data):
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-        if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited": # or issue_event_type == "issue_comment_deleted":
-            formatted_event_type = issue_event_type.replace("_", " ")
+        if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited":
+            formatted_event_type = events.issue_events.get(issue_event_type, "")
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
                                      "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
-                                       formatted_event_type + \
+                                       formatted_event_type + "\n" + \
                                        "**Comment**: " + data["comment"]["body"],
                                      data["user"]["key"],
                                      data["user"]["displayName"])
