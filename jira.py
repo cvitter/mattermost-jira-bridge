@@ -3,7 +3,6 @@ from flask import request
 import json
 import requests
 import events
-import projects
 
 
 def read_config():
