@@ -46,11 +46,7 @@ def read_config():
 def get_project_from_json(project_key):
     with open('projects.json') as project_file:
         d = json.loads(project_file.read())
-    try:
-        return d[project_key]    
-    except:
-        print("Unexpected error:", sys.exc_info()[0])
-        return ""
+    return d["projects"].get(project_key,"")
 
 
 def get_channel(project_key, issue_type):

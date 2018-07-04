@@ -1,5 +1,7 @@
 {
-    "prjx": "prjx-jira",
-    "prjx-bug": "prjx-jira-bugs",
-    "prjz": "prjz-jira"
+	"projects" : {
+    	"prjx": "prjx-jira",
+    	"prjx-bug": "prjx-jira-bugs",
+    	"prjz": "prjz-jira"
+    }
 }
