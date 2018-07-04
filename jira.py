@@ -174,7 +174,7 @@ def handle_actions(project_id, data):
         if issue_event_type == "issue_generic" or issue_event_type == "issue_updated":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_id, data["issue"]["key"]) + " " + \
                                      format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
@@ -183,7 +183,7 @@ def handle_actions(project_id, data):
         if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_id, data["issue"]["key"]) + " " + \
                                      formatted_event_type + "\n" + \
                                      "**Comment**: " + \
                                      comment_link(data["comment"]["body"],
@@ -195,7 +195,7 @@ def handle_actions(project_id, data):
         if issue_event_type == "issue_comment_deleted":
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
-                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_id, data["issue"]["key"]) + " " + \
                                      formatted_event_type,
                                      data["user"]["key"],
                                      data["user"]["displayName"])
