@@ -48,7 +48,8 @@ def get_project_from_json(project_key):
         d = json.loads(project_file.read())
     try:
         return d[project_key]    
-    except:
+    except Error:
+        print ("ERROR: " + Error)
         return ""
 
 
