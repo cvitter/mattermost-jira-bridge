@@ -96,7 +96,7 @@ def issue_link(project_id, issue_id):
 
 def comment_link(comment, issue_id, comment_id):
     return "[" + comment + "](" + jira_url + "browse/" + \
-        issue_id + "focusedCommentId=" + comment_id + ")"
+        issue_id + "?focusedCommentId=" + comment_id + ")"
 
 
 def format_new_issue(event, project_id, issue_key, summary, description,
