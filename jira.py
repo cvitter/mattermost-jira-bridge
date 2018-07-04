@@ -46,8 +46,10 @@ def read_config():
 def get_project_from_json(project_key):
     with open('projects.json') as project_file:
         d = json.loads(project_file.read())
-    #d = json.load(open('projects.json'))
-    return d.get(project_key, "")
+    try:
+        return d[project_key]    
+    except:
+        return ""
 
 
 def get_channel(project_key, issue_type):
