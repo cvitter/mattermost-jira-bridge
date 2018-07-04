@@ -1,8 +1,10 @@
 # JIRA Webhook Bridge for Mattermost
 
-This repository is contains a Python Flask application that accepts webhooks from [JIRA
+This repository contains a Python Flask application that accepts webhooks from [JIRA
 Server](https://www.atlassian.com/software/jira) and forwards them to the specified
 channel or channels in a [Mattermost](https://mattermost.com) server via an incoming webhook.
+You can configure the application to post to channels based on JIRA projects and issue type
+as described below in the **Configuration** section.
  
  **Import Notes**:
  * This application has only been tested with JIRA Server 7.9.2. 
@@ -10,6 +12,10 @@ channel or channels in a [Mattermost](https://mattermost.com) server via an inco
  * This application is an example of how to bridge JIRA webhooks to Mattermost and is not 
  meant to be used in a production environment.
 
+# Installation
+
+
+# Configuration
 
 # Make this Project Better (Questions, Feedback, Pull Requests Etc.)
 
