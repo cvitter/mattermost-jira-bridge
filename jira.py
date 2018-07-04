@@ -36,7 +36,7 @@ def read_config():
     jira_url = d["jira"]["url"]
 
 
-def get_channel(project_id):
+def get_channel(project_id, issue_type):
     """
     Returns the Mattermost channel to post into based on
     settings in config.json or returns "" if not configured
@@ -49,13 +49,13 @@ def get_channel(project_id):
     return channel
 
 
-def send_webhook(project_id, text):
+def send_webhook(project_id, issue_type, text):
     """
     Sends the formatted message to the configured
     Mattermost webhook URL
     """
     if len(project_id) > 0:
-        channel = get_channel(project_id)
+        channel = get_channel(project_id, issue_type)
 
     data = {
         "channel": channel,
@@ -157,7 +157,6 @@ def handle_actions(project_id, data):
 
     if jira_event.find("issue") > -1:
         issue_type = data["issue"]["fields"]["issuetype"]["name"]
-        print ("Issue Type: " + issue_type)
 
     if jira_event == "jira:issue_created":
         message = format_message(project_id,
@@ -176,24 +175,32 @@ def handle_actions(project_id, data):
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
                                      "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
-                                       format_changelog(data["changelog"]["items"]),
+                                     format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
+        formatted_event_type = events.issue_events.get(issue_event_type, "")
         if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited":
-            formatted_event_type = events.issue_events.get(issue_event_type, "")
             message = format_message(project_id,
                                      data["issue"]["fields"]["project"]["name"],
                                      "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
-                                       formatted_event_type + "\n" + \
-                                       "**Comment**: " + \
-                                       comment_link(data["comment"]["body"],
-                                                    data["issue"]["key"],
-                                                    data["comment"]["id"]),
+                                     formatted_event_type + "\n" + \
+                                     "**Comment**: " + \
+                                     comment_link(data["comment"]["body"],
+                                                  data["issue"]["key"],
+                                                  data["comment"]["id"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-    return send_webhook(project_id, message)
+        if issue_event_type == "issue_comment_deleted":
+            message = format_message(project_id,
+                                     data["issue"]["fields"]["project"]["name"],
+                                     "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     formatted_event_type,
+                                     data["user"]["key"],
+                                     data["user"]["displayName"])
+
+    return send_webhook(project_id, issue_type, message)
 
 
 """
@@ -209,7 +216,6 @@ app = Flask(__name__)
 def hooks(project_id):
 
     if len(request.get_json()) > 0:
-        print(project_id)
         print(json.dumps(request.get_json()))
 
         handle_actions(project_id, request.get_json())
