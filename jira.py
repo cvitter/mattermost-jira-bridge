@@ -94,6 +94,11 @@ def issue_link(project_id, issue_id):
         project_id + "/issues/" + issue_id + ")"
 
 
+def comment_link(comment, issue_id, comment_id):
+    return "[" + comment + "](" + jira_url + "browse/" + \
+        issue_id + "focusedCommentId=" + comment_id + ")"
+
+
 def format_new_issue(event, project_id, issue_key, summary, description,
                      priority):
     return "" + \
@@ -179,7 +184,10 @@ def handle_actions(project_id, data):
                                      data["issue"]["fields"]["project"]["name"],
                                      "Issue " + issue_link(project_id, data["issue"]["key"]) + " " + \
                                        formatted_event_type + "\n" + \
-                                       "**Comment**: " + data["comment"]["body"],
+                                       "**Comment**: " + \
+                                       comment_link(data["comment"]["body"],
+                                                    data["issue"]["key"],
+                                                    data["comment"]["id"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
