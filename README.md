@@ -43,10 +43,66 @@ you can leave this as-is or simply update the port to the desired port for your 
 		"host" : "0.0.0.0",
 		"port" : 5007,
 		"debug" : false
+	}
 ```
 
 If you do not want the Flask application to be accessible from other machines you can update the host address to
 `127.0.0.1`. You can also enable Flask's debug mode by changing `debug` to `true`.
+
+### Features
+
+
+```
+	"features" : {
+		"use_project_to_channel_map" : true,
+		"use_project_bugs_to_channel_map" : true,
+		"use_project_to_channel_pattern" : true,
+		"project_to_channel_pattern" : "jira-", 
+		"use_bug_specific_channel" : false,
+		"bug_channel_postfix" : "-bugs",
+		"use_attachments" : true
+	}
+```
+
+### Colors
+
+The colors section has one setting, `attachment`,  which sets the highlight color
+of the message if sent as a 
+[Message Attachment](https://docs.mattermost.com/developer/message-attachments.html).
+**Note**: The default color that the application ships with is green.
+
+```
+	"colors" : {
+		"attachment" : "#28c12b"
+	}
+```
+
+
+### Mattermost
+
+The Mattermost section is used to configure the Mattermost web hook that the application
+will post messages to. You can optionally add a user name and icon to override the 
+default configured in Mattermost.
+
+```
+	"mattermost" : {
+		"webhook" : "https://mattermost.url/hooks/webhookid",
+		"post_user_name" : "JIRA",
+		"post_user_icon" : ""
+	}
+```
+
+### JIRA
+
+The JIRA section has one setting for the base URL of your JIRA server. This setting is used
+to generate links in messages the application posts to Mattermost.
+
+```
+	"jira" : {
+		"url" : "http://jira.url:8080/"
+	}
+```
+
 
 ## Execution
 
