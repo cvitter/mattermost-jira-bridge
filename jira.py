@@ -10,18 +10,25 @@ def read_config():
     """
     Reads config.json to get configuration settings
     """
-    d = json.load(open('config.json'))
+    with open('config.json') as config_file:
+        d = json.loads(config_file.read())
+    #d = json.load(open('config.json'))
 
     global application_host, application_port, application_debug
     application_host = d["application"]["host"]
     application_port = d["application"]["port"]
     application_debug = d["application"]["debug"]
 
-    global use_project_to_channel_map, use_project_to_channel_pattern
-    global project_to_channel_pattern, use_attachments
+    global use_project_to_channel_map, use_project_bugs_to_channel_map
+    global use_project_to_channel_pattern, project_to_channel_pattern
+    global use_bug_specific_channel, bug_channel_postfix
+    global use_attachments
     use_project_to_channel_map = d["features"]["use_project_to_channel_map"]
+    use_project_bugs_to_channel_map = d["features"]["use_project_bugs_to_channel_map"]
     use_project_to_channel_pattern = d["features"]["use_project_to_channel_pattern"]
     project_to_channel_pattern = d["features"]["project_to_channel_pattern"]
+    use_bug_specific_channel = d["features"]["use_bug_specific_channel"]
+    bug_channel_postfix = d["features"]["bug_channel_postfix"]
     use_attachments = d["features"]["use_attachments"]
 
     global attachment_color
@@ -36,26 +43,41 @@ def read_config():
     jira_url = d["jira"]["url"]
 
 
-def get_channel(project_id, issue_type):
+def get_project_from_json(project_key):
+    with open('projects.json') as project_file:
+        d = json.loads(project_file.read())
+    #d = json.load(open('projects.json'))
+    return d.get(project_key, "")
+
+
+def get_channel(project_key, issue_type):
     """
     Returns the Mattermost channel to post into based on
-    settings in config.json or returns "" if not configured
+    settings in config.json or returns "" if no
+    Mattermost channel has been configured
     """
     channel = ""
     if use_project_to_channel_map:
-        channel = projects.project_list.get(project_id, "")
+        if use_project_bugs_to_channel_map and issue_type.lower() == "bug":
+            channel = get_project_from_json(project_key + "-bug")
+        if len(channel) == 0:
+            channel = get_project_from_json(project_key)
+
     if use_project_to_channel_pattern and len(channel) == 0:
-        channel = project_to_channel_pattern + project_id
+        channel = project_to_channel_pattern + project_key
+        if use_bug_specific_channel and issue_type.lower() == "bug":
+            channel += bug_channel_postfix
+
     return channel
 
 
-def send_webhook(project_id, issue_type, text):
+def send_webhook(project_key, issue_type, text):
     """
     Sends the formatted message to the configured
     Mattermost webhook URL
     """
-    if len(project_id) > 0:
-        channel = get_channel(project_id, issue_type)
+    if len(project_key) > 0:
+        channel = get_channel(project_key, issue_type)
 
     data = {
         "channel": channel,
@@ -84,14 +106,14 @@ def user_profile_link(user_id, user_name):
         "secure/ViewProfile.jspa?name=" + user_id + ")"
 
 
-def project_link(project_name, project_id):
+def project_link(project_name, project_key):
     return "[" + project_name + "](" + jira_url + "projects/" + \
-        project_id + ")"
+        project_key + ")"
 
 
-def issue_link(project_id, issue_id):
+def issue_link(project_key, issue_id):
     return "[" + issue_id + "](" + jira_url + "projects/" + \
-        project_id + "/issues/" + issue_id + ")"
+        project_key + "/issues/" + issue_id + ")"
 
 
 def comment_link(comment, issue_id, comment_id):
@@ -101,10 +123,10 @@ def comment_link(comment, issue_id, comment_id):
         "comment-tabpanel#comment-" + comment_id + ")"
 
 
-def format_new_issue(event, project_id, issue_key, summary, description,
+def format_new_issue(event, project_key, issue_key, summary, description,
                      priority):
     return "" + \
-        event + " " + issue_link(project_id, issue_key) + "\n" \
+        event + " " + issue_link(project_key, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
         "**Description**: " + description
 
@@ -123,17 +145,17 @@ def format_changelog(changelog_items):
     return output
 
 
-def format_message(project_id, project_name, event, user_id, user_name):
+def format_message(project_key, project_name, event, user_id, user_name):
     """
     """
     message = "" + \
-        "**Project**: " + project_link(project_id, project_id) + "\n" \
+        "**Project**: " + project_link(project_key, project_key) + "\n" \
         "**Action**: " + event + "\n" \
         "**User**: " + user_profile_link(user_id, user_name)
     return message
 
 
-def handle_actions(project_id, data):
+def handle_actions(project_key, data):
     """
     """
     message = ""
@@ -150,7 +172,7 @@ def handle_actions(project_id, data):
         return None
 
     if jira_event == "project_created":
-        message = format_message(project_id, data["project"]["name"],
+        message = format_message(project_key, data["project"]["name"],
                                  jira_event_text,
                                  data["project"]["projectLead"]["key"],
                                  data["project"]["projectLead"]["displayName"])
@@ -159,9 +181,9 @@ def handle_actions(project_id, data):
         issue_type = data["issue"]["fields"]["issuetype"]["name"]
 
     if jira_event == "jira:issue_created":
-        message = format_message(project_id,
+        message = format_message(project_key,
                                  data["issue"]["fields"]["project"]["name"],
-                                 format_new_issue(jira_event_text, project_id,
+                                 format_new_issue(jira_event_text, project_key,
                                                   data["issue"]["key"],
                                                   data["issue"]["fields"]["summary"],
                                                   data["issue"]["fields"]["description"],
@@ -172,18 +194,18 @@ def handle_actions(project_id, data):
     if jira_event == "jira:issue_updated":
         issue_event_type = data["issue_event_type_name"]
         if issue_event_type == "issue_generic" or issue_event_type == "issue_updated":
-            message = format_message(project_id,
+            message = format_message(project_key,
                                      data["issue"]["fields"]["project"]["name"],
-                                     issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_key, data["issue"]["key"]) + " " + \
                                      format_changelog(data["changelog"]["items"]),
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
         formatted_event_type = events.issue_events.get(issue_event_type, "")
         if issue_event_type == "issue_commented" or issue_event_type == "issue_comment_edited":
-            message = format_message(project_id,
+            message = format_message(project_key,
                                      data["issue"]["fields"]["project"]["name"],
-                                     issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_key, data["issue"]["key"]) + " " + \
                                      formatted_event_type + "\n" + \
                                      "**Comment**: " + \
                                      comment_link(data["comment"]["body"],
@@ -193,14 +215,14 @@ def handle_actions(project_id, data):
                                      data["user"]["displayName"])
 
         if issue_event_type == "issue_comment_deleted":
-            message = format_message(project_id,
+            message = format_message(project_key,
                                      data["issue"]["fields"]["project"]["name"],
-                                     issue_link(project_id, data["issue"]["key"]) + " " + \
+                                     issue_link(project_key, data["issue"]["key"]) + " " + \
                                      formatted_event_type,
                                      data["user"]["key"],
                                      data["user"]["displayName"])
 
-    return send_webhook(project_id, issue_type, message)
+    return send_webhook(project_key, issue_type, message)
 
 
 """
@@ -212,13 +234,13 @@ read_config()
 app = Flask(__name__)
 
 
-@app.route('/jira/<project_id>', methods=['POST'])
-def hooks(project_id):
+@app.route('/jira/<project_key>', methods=['POST'])
+def hooks(project_key):
 
     if len(request.get_json()) > 0:
         print(json.dumps(request.get_json()))
 
-        handle_actions(project_id, request.get_json())
+        handle_actions(project_key, request.get_json())
     return ""
 
 if __name__ == '__main__':

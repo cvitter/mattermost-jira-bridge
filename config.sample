@@ -6,6 +6,7 @@
 	},
 	"features" : {
 		"use_project_to_channel_map" : true,
+		"use_project_bugs_to_channel_map" : true,
 		"use_project_to_channel_pattern" : true,
 		"project_to_channel_pattern" : "jira-", 
 		"use_bug_specific_channel" : false,
