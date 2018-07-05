@@ -90,10 +90,10 @@ below the `PRJX` project key would map to the `prjx-jira' channel in Mattermost.
 ```
 
 **Note**: In the example above the `prjx-jira` channel is named `PRJX: JIRA`. Mattermost converted 
-the channel name to `prjx-jira` for the channel URL by removing spaces and special characters.
-When specifying the channel to send messages to you need to use this modified URL friendly
-format. If you need to find the correct format you can select `View Info` for the channel in
-Mattermost and select the channel portion of the URL, e.g.:
+the channel name to `prjx-jira` for the channel URL by replacing spaces with `-` and removing 
+special characters. When specifying the channel to send messages to you need to use this
+modified URL friendly format. If you need to find the correct format you can select `View Info` 
+for the channel in Mattermost and select the channel portion of the URL, e.g.:
 `https://mymattermostserver.com/myteam/channels/prjx-jira`.
 
 * `use_project_bugs_to_channel_map` - when set to true the application will check the `projects.json`
@@ -101,6 +101,21 @@ file when the issue type equals `bug` and select the Mattermost channel based on
 Key with `-bug` appended to it. In the example above a bug submitted in the PRJX project
 would be mapped as `prjx-bug` and the corresponding message would be posted to the 
 `prjx-jira-bugs` channel.
+
+* `use_project_to_channel_pattern` - when set to true the application will prepend the value found
+in the `roject_to_channel_pattern` field to the project key to generate the channel name to post
+the message to.
+
+**Notes**: 
+* This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
+are set to true. In scenarios where the project key being tested does not have a match in the
+`projects.json` folder the application will try and match the message to a folder based on
+the `project_to_channel_pattern` field.
+* The channel in the `project_to_channel_pattern` field must exist in Mattermost for the 
+message to post.
+
+* `project_to_channel_pattern` - 
+
 
 ### Colors
 
