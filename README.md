@@ -33,7 +33,7 @@ how your organization uses JIRA. The following instructions cover configuration:
 3. Open the `config.json` file using your favorite editor (e.g. `sudo nano config.json`) and make the
 edits to each section as described below:
 
-### Application
+**Application**
 
 The `application` section setups up the runtime environment of the Flask application. For most uses
 you can leave this as-is or simply update the port to the desired port for your environment.
@@ -50,7 +50,7 @@ If you do not want the Flask application to be accessible from other machines yo
 update the host address to `127.0.0.1`. You can also enable Flask's debug mode by 
 changing `debug` to `true`.
 
-### Features
+**Features**
 
 The `features` section allows you to configure how messages map to Mattermost channels based 
 on JIRA project and whether or not the issue is labeled as a bug. The channel mapping has
@@ -127,7 +127,7 @@ to `true`. The default value is `-bugs`.
 set to `false` messages will be sent as plain text (with Markdown support).
 
 
-### Colors
+**Colors**
 
 The `colors` section has one setting, `attachment`,  which sets the highlight color
 of the message if sent as a 
@@ -140,7 +140,7 @@ of the message if sent as a
 	}
 ```
 
-### Mattermost
+**Mattermost**
 
 The `mattermost` section is used to configure the Mattermost web hook that the application
 will post messages to. You can optionally add a user name and icon to override the 
