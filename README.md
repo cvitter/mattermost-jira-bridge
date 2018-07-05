@@ -75,7 +75,7 @@ Specific configuration settings are described in more detail below.
 	}
 ```
 
-* `use_project_to_channel_map` - when set to true the application will check the `projects.json`
+* `use_project_to_channel_map` - when set to `true` the application will check the `projects.json`
 file and select the Mattermost channel based on the JIRA Project Key. In the example file
 below the `PRJX` project key would map to the `prjx-jira' channel in Mattermost.
 
