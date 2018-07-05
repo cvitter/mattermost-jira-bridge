@@ -181,7 +181,7 @@ def handle_actions(project_key, data):
     if jira_event == "jira:issue_created":
         message = format_message(project_key,
                                  data["issue"]["fields"]["project"]["name"],
-                                 format_new_issue("New " + issue_type + " created", 
+                                 format_new_issue("New **" + issue_type + "** created for:", 
                                                   project_key,
                                                   data["issue"]["key"],
                                                   data["issue"]["fields"]["summary"],
