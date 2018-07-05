@@ -107,13 +107,14 @@ in the `roject_to_channel_pattern` field to the project key to generate the chan
 the message to.
 
 **Notes**: 
-* This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
+- This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
 are set to true. In scenarios where the project key being tested does not have a match in the
 `projects.json` folder the application will try and match the message to a folder based on
 the `project_to_channel_pattern` field.
-* The channel in the `project_to_channel_pattern` field must exist in Mattermost for the 
+- The channel in the `project_to_channel_pattern` field must exist in Mattermost for the 
 message to post.
 
+ 
 * `project_to_channel_pattern` - 
 
 
