@@ -10,6 +10,7 @@ Currently the application supports the following JIRA event types:
 
 * Project Created
 * Issue Created
+* Issue Edited
 * Issue Commented
 * Issue Comment - Edited
 * Issue Comment - Deleted
