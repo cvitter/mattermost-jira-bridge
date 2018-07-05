@@ -11,7 +11,6 @@ def read_config():
     """
     with open('config.json') as config_file:
         d = json.loads(config_file.read())
-    #d = json.load(open('config.json'))
 
     global application_host, application_port, application_debug
     application_host = d["application"]["host"]
@@ -46,7 +45,7 @@ def get_project_from_json(project_key):
     project_key = project_key.lower()
     with open('projects.json') as project_file:
         d = json.loads(project_file.read())
-    return d["projects"].get(project_key,"")
+    return d["projects"].get(project_key, "")
 
 
 def get_channel(project_key, issue_type):
@@ -61,7 +60,7 @@ def get_channel(project_key, issue_type):
             channel = get_project_from_json(project_key + "-bug")
         if len(channel) == 0:
             channel = get_project_from_json(project_key)
-    
+
     if use_project_to_channel_pattern and len(channel) == 0:
         channel = project_to_channel_pattern + project_key
         if use_bug_specific_channel and issue_type.lower() == "bug":
@@ -237,8 +236,7 @@ app = Flask(__name__)
 def hooks(project_key):
 
     if len(request.get_json()) > 0:
-        print(json.dumps(request.get_json()))
-
+        # print(json.dumps(request.get_json()))
         handle_actions(project_key, request.get_json())
     return ""
 

@@ -120,10 +120,17 @@ would be mapped as `prjx-bug` and the corresponding message would be posted to t
 
 * `use_project_to_channel_pattern` - when set to `true` the application will prepend the value found
 in the `project_to_channel_pattern` field to the project key to generate the channel name to post
-the message to. **Note**:  This setting will work if both `use_project_to_channel_map` and 
-`use_project_bugs_to_channel_map` are set to `true`. In scenarios where the project key being tested does not have a match in the
-`projects.json` folder the application will try and match the message to a folder based on
-the `project_to_channel_pattern` field.
+the message to. 
+
+**Note**:  This setting will work if both `use_project_to_channel_map` and 
+`use_project_bugs_to_channel_map` are set to `true`. In scenarios where the project key being tested 
+does not have a match in the `projects.json` folder the application will try and match the message 
+to a folder based on the `project_to_channel_pattern` field.
+
+**Important Note**: Once `use_project_to_channel_pattern` is set to `true` the application will try to
+send all messages to channels based on the `project_to_channel_pattern` (if the channel name isn't
+created using the Project to Channel Mapping). If the channel doesn't exist in Mattermost the
+message will not post. 
  
 * `project_to_channel_pattern` - the string to prepend to the project key to generate a channel name
 to post a message to.
