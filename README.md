@@ -96,38 +96,38 @@ modified URL friendly format. If you need to find the correct format you can sel
 for the channel in Mattermost and select the channel portion of the URL, e.g.:
 `https://mymattermostserver.com/myteam/channels/prjx-jira`.
 
+**Important Note**: If no channel is specified Mattermost will post the message into the default
+channel configured in the webhook. If a channel _is_ specified but does not exist in
+Mattermost the message will not post in Mattermost.
+
 * `use_project_bugs_to_channel_map` - when set to true the application will check the `projects.json`
 file when the issue type equals `bug` and select the Mattermost channel based on the JIRA Project 
 Key with `-bug` appended to it. In the example above a bug submitted in the PRJX project
 would be mapped as `prjx-bug` and the corresponding message would be posted to the 
 `prjx-jira-bugs` channel.
 
-* `use_project_to_channel_pattern` - when set to true the application will prepend the value found
+* `use_project_to_channel_pattern` - when set to `true` the application will prepend the value found
 in the `project_to_channel_pattern` field to the project key to generate the channel name to post
 the message to.
 
-**Notes**: 
-- This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
-are set to true. In scenarios where the project key being tested does not have a match in the
+**Note**: 
+This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
+are set to `true`. In scenarios where the project key being tested does not have a match in the
 `projects.json` folder the application will try and match the message to a folder based on
 the `project_to_channel_pattern` field.
-
-- The channel in the `project_to_channel_pattern` field must exist in Mattermost for the 
-message to post.
-.
  
 * `project_to_channel_pattern` - the string to prepend to the project key to generate a channel name
 to post a message to.
 
-* `use_bug_specific_channel` - when set to true the application will append the `bug_channel_postfix` value
+* `use_bug_specific_channel` - when set to `true` the application will append the `bug_channel_postfix` value
 to the channel name. 
 
 * `bug_channel_postfix` - The value appended to the channel name if `use_bug_specific_channel` is set 
-to true. The default value is `-bugs`.
+to `true`. The default value is `-bugs`.
 
-* `use_attachments` - when set to true the application sends messages in the Mattermost 
+* `use_attachments` - when set to `true` the application sends messages in the Mattermost 
 [Message Attachment](https://docs.mattermost.com/developer/message-attachments.html) format. When
-set to false messages will be sent as plain text (with Markdown support).
+set to `false` messages will be sent as plain text (with Markdown support).
 
 
 ### Colors
