@@ -154,7 +154,7 @@ default configured in Mattermost.
 	}
 ```
 
-### JIRA
+**JIRA**
 
 The `jira` section has one setting for the base URL of your JIRA server. This setting is used
 to generate links in messages the application posts to Mattermost.
