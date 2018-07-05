@@ -184,14 +184,14 @@ The following steps describe how to setup the JIRA webhook:
 2. Click on `WebHooks` in the `Advanced` section.
 3. Click on the `Create a WebHook` button at the top right of the page.
 4. Fill in the `New WebHook Listener` form:
-  * Enter a name for your webhook;
-  * Click on `Enabled` for `Status` to ensure that the webhook fires;
-  * Enter your Mattermost incoming webhook URL and append `/{project.key}` to the end 
-  (example:` https://mattermost.url/hooks/webhookid/{project.key}`) so that JIRA will pass
-  the project key via the URL to bridge application.
-  * Select the events that you want to send from JIRA to Mattermost (**Note**: only the
-  events listed in the introduction above are currently supported however unsupported
-  events will not cause application failures.)
+    * Enter a name for your webhook;
+    * Click on `Enabled` for `Status` to ensure that the webhook fires;
+    * Enter your Mattermost incoming webhook URL and append `/{project.key}` to the end 
+      (example:` https://mattermost.url/hooks/webhookid/{project.key}`) so that JIRA will pass
+      the project key via the URL to bridge application.
+    * Select the events that you want to send from JIRA to Mattermost (**Note**: only the
+      events listed in the introduction above are currently supported however unsupported
+      events will not cause application failures.)
 5. Click on the `Create` button to finish creating the webhook.
 
 
