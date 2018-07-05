@@ -2,9 +2,18 @@
 
 This repository contains a Python Flask application that accepts webhooks from [JIRA
 Server](https://www.atlassian.com/software/jira) and forwards them to the specified
-channel or channels in a [Mattermost](https://mattermost.com) server via an incoming webhook.
+channel, or channels, in a [Mattermost](https://mattermost.com) server via an incoming webhook.
 You can configure the application to post to channels based on JIRA projects and issue type
 as described below in the **Configuration** section.
+
+Currently the application supports the following JIRA event types:
+
+* Project Created
+* Issue Created
+* Issue Commented
+* Issue Comment - Edited
+* Issue Comment - Deleted
+
  
  **Import Notes**:
  * This application has only been tested with JIRA Server 7.9.2. 
@@ -22,6 +31,8 @@ The easiest way to install this application is to:
 
 1. Log into the machine that will host the Python Flask application;
 2. Clone this repository to your machine: `git clone https://github.com/cvitter/mattermost-jira-bridge.git`;
+3. Create a webhook in Mattermost to accept posts from JIRA (**Note**: You will need the URL for
+this webhook when configuring the application below.)
 
 ## Configuration
 
@@ -164,6 +175,25 @@ to generate links in messages the application posts to Mattermost.
 		"url" : "http://jira.url:8080/"
 	}
 ```
+
+### JIRA Webhook
+
+The following steps describe how to setup the JIRA webhook:
+
+1. Select `System` from the `Administration` menu (**Note**: You must have administrative rights.)
+2. Click on `WebHooks` in the `Advanced` section.
+3. Click on the `Create a WebHook` button at the top right of the page.
+4. Fill in the `New WebHook Listener` form:
+  * Enter a name for your webhook;
+  * Click on `Enabled` for `Status` to ensure that the webhook fires;
+  * Enter your Mattermost incoming webhook URL and append `/{project.key}` to the end 
+  (example:` https://mattermost.url/hooks/webhookid/{project.key}`) so that JIRA will pass
+  the project key via the URL to bridge application.
+  * Select the events that you want to send from JIRA to Mattermost (**Note**: only the
+  events listed in the introduction above are currently supported however unsupported
+  events will not cause application failures.)
+5. Click on the `Create` button to finish creating the webhook.
+
 
 ## Execution
 
