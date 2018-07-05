@@ -82,9 +82,9 @@ below the `PRJX` project key would map to the `prjx-jira' channel in Mattermost.
 ```
 {
 	"projects" : {
-    	"prjx": "prjx-jira",
-    	"prjx-bug": "prjx-jira-bugs",
-    	"prjz": "prjz-jira"
+    		"prjx": "prjx-jira",
+    		"prjx-bug": "prjx-jira-bugs",
+    		"prjz": "prjz-jira"
     }
 }
 ```
