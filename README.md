@@ -85,7 +85,7 @@ below the `PRJX` project key would map to the `prjx-jira' channel in Mattermost.
     		"prjx": "prjx-jira",
     		"prjx-bug": "prjx-jira-bugs",
     		"prjz": "prjz-jira"
-    }
+	}
 }
 ```
 
@@ -108,11 +108,8 @@ would be mapped as `prjx-bug` and the corresponding message would be posted to t
 
 * `use_project_to_channel_pattern` - when set to `true` the application will prepend the value found
 in the `project_to_channel_pattern` field to the project key to generate the channel name to post
-the message to.
-
-**Note**: 
-This setting will work if both `use_project_to_channel_map` and `use_project_bugs_to_channel_map` 
-are set to `true`. In scenarios where the project key being tested does not have a match in the
+the message to. **Note**:  This setting will work if both `use_project_to_channel_map` and 
+`use_project_bugs_to_channel_map` are set to `true`. In scenarios where the project key being tested does not have a match in the
 `projects.json` folder the application will try and match the message to a folder based on
 the `project_to_channel_pattern` field.
  
