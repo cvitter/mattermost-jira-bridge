@@ -126,7 +126,7 @@ def format_new_issue(event, project_key, issue_key, summary, description,
     return "" + \
         event + " " + issue_link(project_key, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
-        "**Description**: " + description.encode('ascii','replace').strip()
+        "**Description**: " + description.encode('ascii','ignore').strip()
 
 
 def format_changelog(changelog_items):
@@ -138,8 +138,8 @@ def format_changelog(changelog_items):
         output = "\n"
     for item in changelog_items:
         output += "Field **" + item["field"] + "** updated from _" + \
-                  item["fromString"].encode('ascii','replace').strip() + "_ to _" + \
-                  item["toString"].encode('ascii','replace').strip() + "_\n"
+                  item["fromString"].encode('ascii','ignore').strip() + "_ to _" + \
+                  item["toString"].encode('ascii','ignore').strip() + "_\n"
     return output
 
 
@@ -184,8 +184,8 @@ def handle_actions(project_key, data):
                                  format_new_issue("New **" + issue_type + "** created for:", 
                                                   project_key,
                                                   data["issue"]["key"],
-                                                  data["issue"]["fields"]["summary"].encode('ascii','replace').strip(),
-                                                  data["issue"]["fields"]["description"].encode('ascii','replace').strip(),
+                                                  data["issue"]["fields"]["summary"].encode('ascii','ignore').strip(),
+                                                  data["issue"]["fields"]["description"].encode('ascii','ignore').strip(),
                                                   data["issue"]["fields"]["priority"]["name"]),
                                  data["user"]["key"],
                                  data["user"]["displayName"])
