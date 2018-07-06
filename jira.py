@@ -126,7 +126,7 @@ def format_new_issue(event, project_key, issue_key, summary, description,
     return "" + \
         event + " " + issue_link(project_key, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
-        "**Description**: " + description
+        "**Description**: " + description.encode('utf-8')
 
 
 def format_changelog(changelog_items):
