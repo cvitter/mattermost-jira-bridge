@@ -127,7 +127,6 @@ def format_new_issue(event, project_key, issue_key, summary, description,
         event + " " + issue_link(project_key, issue_key) + "\n" \
         "**Summary**: " + summary + " (_" + priority + "_)\n" \
         "**Description**: " + description.encode("ascii")
-        #"**Description**: " + description.decode('unicode_escape').encode('ascii','ignore')
 
 
 def format_changelog(changelog_items):
@@ -139,8 +138,8 @@ def format_changelog(changelog_items):
         output = "\n"
     for item in changelog_items:
         output += "Field **" + item["field"] + "** updated from _" + \
-                  item["fromString"].encode('utf-8') + "_ to _" + \
-                  item["toString"].encode('utf-8') + "_\n"
+                  item["fromString"].encode("ascii") + "_ to _" + \
+                  item["toString"].encode("ascii") + "_\n"
     return output
 
 
@@ -185,8 +184,8 @@ def handle_actions(project_key, data):
                                  format_new_issue("New **" + issue_type + "** created for:", 
                                                   project_key,
                                                   data["issue"]["key"],
-                                                  data["issue"]["fields"]["summary"].encode('utf-8'),
-                                                  data["issue"]["fields"]["description"].encode('utf-8'),
+                                                  data["issue"]["fields"]["summary"].encode("ascii"),
+                                                  data["issue"]["fields"]["description"].encode("ascii"),
                                                   data["issue"]["fields"]["priority"]["name"]),
                                  data["user"]["key"],
                                  data["user"]["displayName"])
