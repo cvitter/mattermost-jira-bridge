@@ -138,8 +138,8 @@ def format_changelog(changelog_items):
         output = "\n"
     for item in changelog_items:
         output += "Field **" + item["field"] + "** updated from _" + \
-                  str(item["fromString"]) + "_ to _" + \
-                  str(item["toString"]) + "_\n"
+                  item["fromString"].encode('utf-8') + "_ to _" + \
+                  item["toString"].encode('utf-8') + "_\n"
     return output
 
 
@@ -184,8 +184,8 @@ def handle_actions(project_key, data):
                                  format_new_issue("New **" + issue_type + "** created for:", 
                                                   project_key,
                                                   data["issue"]["key"],
-                                                  data["issue"]["fields"]["summary"],
-                                                  data["issue"]["fields"]["description"],
+                                                  data["issue"]["fields"]["summary"].encode('utf-8'),
+                                                  data["issue"]["fields"]["description"].encode('utf-8'),
                                                   data["issue"]["fields"]["priority"]["name"]),
                                  data["user"]["key"],
                                  data["user"]["displayName"])
